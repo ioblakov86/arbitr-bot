@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: arbitr_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data  # For persistent storage
+    environment:
+      - DATABASE_URL=sqlite:///data/arbitr_bot.db
+    ports:
+      - "8443:8443"
+    depends_on:
+      - db
+    networks:
+      - arbitr_network
+
+  # Optional: PostgreSQL database instead of SQLite
+  db:
+    image: postgres:15-alpine
+    container_name: arbitr_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=arbitr_bot
+      - POSTGRES_USER=arbitr_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-defaultpassword}
+    volumes:
+      - arbitr_db_data:/var/lib/postgresql/data
+    networks:
+      - arbitr_network
+
+volumes:
+  arbitr_db_data:
+
+networks:
+  arbitr_network:
+    driver: bridge

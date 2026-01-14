@@ -1,0 +1,11 @@
+# Telegram Bot Framework
+python-telegram-bot==20.7
+
+# Database
+sqlalchemy>=2.0.23
+
+# HTTP requests
+requests==2.31.0
+
+# Configuration
+python-dotenv==1.0.0
