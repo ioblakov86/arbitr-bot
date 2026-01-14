@@ -44,18 +44,18 @@ def main():
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not bot_token:
         raise ValueError("TELEGRAM_BOT_TOKEN environment variable is required")
-    
+
     # Get channels to monitor
     channels_env = os.getenv("PARSED_CHANNELS", '["channel1", "channel2"]')
     import json
     channels = json.loads(channels_env)
-    
+
     # Initialize bot
     bot = ArbitrBot(bot_token)
-    
+
     # Start collector in background
     collector_task = asyncio.create_task(run_collector(channels))
-    
+
     # Start bot
     try:
         bot.run_polling()

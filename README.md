@@ -26,10 +26,11 @@ Simple architecture with the following components:
 pip install -r requirements.txt
 ```
 
-2. Create a `.env` file with your configuration:
+2. Create a `.env` file with your configuration (use `.env.example` as template):
 ```env
 TELEGRAM_BOT_TOKEN=your_bot_token_here
 DATABASE_URL=sqlite:///arbitr_bot.db
+LOG_LEVEL=INFO
 PARSED_CHANNELS=["channel1", "channel2"]
 ```
 
@@ -46,9 +47,27 @@ python -m arbitr_bot.main
 - `/search <keyword>` - Search ads by keyword
 - `/bycategory <category>` - Show ads by category
 
-## Docker Support (Future)
+## Docker Support
 
 The architecture is designed to be containerizable for deployment on Kubernetes.
+
+Build and run with Docker:
+```bash
+docker build -t arbitr_bot .
+docker run -d --env-file .env arbitr_bot
+```
+
+Or with docker-compose:
+```bash
+docker-compose up -d
+```
+
+## Configuration
+
+- `TELEGRAM_BOT_TOKEN` - Your Telegram bot token from @BotFather
+- `DATABASE_URL` - Database connection string (SQLite by default)
+- `LOG_LEVEL` - Logging level (INFO, DEBUG, ERROR)
+- `PARSED_CHANNELS` - JSON array of channel usernames to monitor
 
 ## License
 

@@ -5,6 +5,10 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from ..database.crud import get_announcements_by_category, get_announcements_by_keyword, get_all_categories
 from ..database.db import SessionLocal
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(

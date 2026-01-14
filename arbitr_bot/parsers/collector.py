@@ -5,6 +5,10 @@ from ..database.crud import create_announcement
 from ..database.db import SessionLocal
 from ..parsers.parser import parse_announcement, extract_links
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
