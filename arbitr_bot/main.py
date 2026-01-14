@@ -38,8 +38,8 @@ async def run_collector(channels):
             # Wait for 5 minutes before retrying
             await asyncio.sleep(300)
 
-def main():
-    """Main function to start the bot and collector"""
+async def main_async():
+    """Async main function to start the bot and collector"""
     # Get bot token from environment variable
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not bot_token:
@@ -53,16 +53,26 @@ def main():
     # Initialize bot
     bot = ArbitrBot(bot_token)
 
-    # Start collector in background
+    # Create tasks for both bot and collector
     collector_task = asyncio.create_task(run_collector(channels))
 
-    # Start bot
+    # Run both tasks concurrently
     try:
-        bot.run_polling()
+        # Run the bot polling in the event loop
+        await bot.application.run_polling(drop_pending_updates=True)
     except KeyboardInterrupt:
         logger.info("Shutting down...")
     finally:
         collector_task.cancel()
+        try:
+            await collector_task
+        except asyncio.CancelledError:
+            pass
+
+def main():
+    """Main function to start the bot and collector"""
+    # Run the async main function
+    asyncio.run(main_async())
 
 if __name__ == "__main__":
     main()

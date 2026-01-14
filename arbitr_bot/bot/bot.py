@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class ArbitrBot:
     def __init__(self, token: str):
         self.token = token
-        self.application = Application.builder().token(self.token).build()
+        self.application = Application.builder().token(self.token).concurrent_updates(True).build()
         self.setup_handlers()
     
     def setup_handlers(self):
@@ -122,4 +122,4 @@ class ArbitrBot:
     def run_polling(self):
         """Start the bot in polling mode"""
         logger.info("Starting bot...")
-        self.application.run_polling()
+        self.application.run_polling(drop_pending_updates=True)
